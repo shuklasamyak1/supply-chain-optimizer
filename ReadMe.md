@@ -7,6 +7,15 @@
 
 An interactive, end-to-end supply chain analytics platform evaluating fulfillment volatility, supplier reliability, and inventory risk across multimodal global logistics networks.
 
+
+###  Interface Snapshots
+
+**1. Executive KPI Strip & Operational Variance Distributions**
+![Dashboard View 1](Dashboard_image.png)
+
+**2. Safety Stock Simulation & Supplier Performance Matrix**
+![Dashboard View 2](Dashboard_image2.png)
+
 🔗 **Live Interactive Application:** [Launch Dashboard](https://supply-chain-optimizer-nd2hjpl7rhhkhe7p9nfzme.streamlit.app/)
 
 ---
@@ -94,3 +103,16 @@ On your main repository page:
 3. **Website:** Paste your live link: `[https://supply-chain-optimizer-nd2hjpl7rhhkhe7p9nfzme.streamlit.app/](https://supply-chain-optimizer-nd2hjpl7rhhkhe7p9nfzme.streamlit.app/)`
 4. **Topics / Tags:** Add `python`, `data-analytics`, `supply-chain`, `streamlit`, `plotly`, `operations-research`.
 5. Click **Save changes**.
+
+
+##  Live Application Demo & Previews
+
+###  Animated Workflow
+![Dashboard Walkthrough](Preview_dashboard.gif)
+
+---
+
+###  Full Video Walkthrough
+Click below to view the high-resolution demonstration recording:
+
+ **[Watch Full Dashboard Walkthrough (MP4)](Recording_using_dashboard.mp4)**
