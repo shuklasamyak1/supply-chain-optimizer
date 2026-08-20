@@ -1,4 +1,4 @@
-# 📦 Global Supply Chain Risk & Operational Optimizer
+#  Global Supply Chain Risk & Operational Optimizer
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://supply-chain-optimizer-nd2hjpl7rhhkhe7p9nfzme.streamlit.app/)
 ![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
@@ -11,14 +11,14 @@ An interactive, end-to-end supply chain analytics platform evaluating fulfillmen
 
 ---
 
-## 🖥️ Live Application Demo & Previews
+##  Live Application Demo & Previews
 
-### 🎬 Animated Workflow
+###  Animated Workflow
 ![Dashboard Walkthrough](Preview_dashboard.gif)
 
 ---
 
-### 📊 Interface Snapshots
+###  Interface Snapshots
 
 **1. Executive KPI Strip & Operational Variance Distributions**
 ![Dashboard View 1](Dashboard_image.png)
@@ -28,14 +28,14 @@ An interactive, end-to-end supply chain analytics platform evaluating fulfillmen
 
 ---
 
-### 🎥 Full Video Walkthrough
+###  Full Video Walkthrough
 Click below to view the high-resolution demonstration recording:
 
-▶️ **[Watch Full Dashboard Walkthrough (MP4)](Recording_using_dashboard.mp4)**
+ **[Watch Full Dashboard Walkthrough (MP4)](Recording_using_dashboard.mp4)**
 
 ---
 
-## 🎯 Executive Overview & Core Problem
+##  Executive Overview & Core Problem
 
 In enterprise logistics, fulfillment volatility directly impacts bottom-line profitability. Unreliable supplier timelines increase inventory holding costs and risk production line shutdowns.
 
@@ -46,7 +46,7 @@ This decision-support tool evaluates **2,500 multimodal shipment records** to:
 
 ---
 
-## 🚀 Key Features
+##  Key Features
 
 * **Real-Time Dynamic Filtering:** Slices multi-tier data by suppliers, product categories, and logistics freight modes.
 * **Lead-Time Variance Analysis:** Visualizes transit day distributions and outlier spreads via combined Histograms and Box Plots.
@@ -57,7 +57,7 @@ This decision-support tool evaluates **2,500 multimodal shipment records** to:
 
 ---
 
-## 🛠️ Tech Stack & Methodologies
+##  Tech Stack & Methodologies
 
 * **Analytics & Modeling:** Python, Pandas, NumPy
 * **Interactive Visualization:** Plotly Express
