@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 
-An enterprise-grade operational risk analytics suite that evaluates **On-Time In-Full (OTIF)** fulfillment, quantifies **dynamic financial disruption penalties**, and simulates **stochastic buffer inventory** (Safety Stock & Reorder Points) under compound lead-time ($\sigma_L$) and demand ($\sigma_D$) volatility.
+An enterprise-grade operational risk analytics suite that evaluates **On-Time In-Full (OTIF)** fulfillment, quantifies **empirical financial disruption losses**, and simulates **stochastic buffer inventory** (Safety Stock & Reorder Points) under compound lead-time ($\sigma_L$) and demand ($\sigma_D$) volatility.
 
 ---
 
@@ -13,7 +13,7 @@ An enterprise-grade operational risk analytics suite that evaluates **On-Time In
 ### Executive Terminal & Risk Engine Demo
 https://github.com/user-attachments/assets/Dashboard_Preview.mp4
 
-> **Interactive Cockpit:** Real-time multi-echelon filtering across suppliers, freight modes, and SKUs to quantify financial delay write-offs and optimize inventory thresholds.
+> **Interactive Cockpit:** Real-time multi-echelon filtering across suppliers, freight modes, and SKUs to quantify financial delay write-offs and optimize working capital allocation.
 
 ---
 
@@ -38,39 +38,43 @@ https://github.com/user-attachments/assets/Dashboard_Preview.mp4
 Global procurement networks frequently suffer margin leakage caused by unmonitored supplier delay variance, defect write-offs, and stockouts. Traditional ERP dashboards report static historical averages without linking delivery variance to working capital risk.
 
 This engine bridges descriptive logistics metrics with prescriptive financial controls by integrating:
-1. **Dynamic Disruption Penalty Accounting:** Real-time calculation of late delivery penalties and defect write-offs tied to invoice values.
-2. **Multi-Modal Transit Analytics:** Empirical lead-time distribution modeling across Air, Ocean, Rail, and Road freight.
-3. **Dual-Variability Buffer Simulation:** Formulates safety stock ($SS$) and reorder point ($ROP$) policies accounting for simultaneous demand swings and supplier transit volatility.
-4. **Audit & Anomaly Isolation:** Granular logging and immediate CSV export of non-compliant shipment batches.
+1. **Dynamic Disruption Accounting:** Real-time calculation of empirical late delivery penalties and defect write-offs tied directly to invoice values.
+2. **Multi-Modal Transit Variance:** Empirical distribution modeling across Air, Ocean, Rail, and Road freight modes to detect fat-tail transit risks.
+3. **Compound Variability Buffer Simulation:** Formulates safety stock ($SS$) and continuous-review reorder point ($ROP$) policies accounting for simultaneous demand swings and supplier transit volatility.
+4. **Audit & Anomaly Isolation:** Granular exception logging and automated CSV extraction of non-compliant shipment batches.
 
 ---
 
 ## 🧮 Mathematical & Econometric Formulations
 
 ### 1. Dynamic Financial Disruption Loss Function
+Disruption impact is computed across historical shipments without imposing restrictive distribution assumptions:
+
 $$\text{Loss}_{\text{Total}} = \sum_{k=1}^{M} \left[ \Delta t_k \cdot C_{\text{delay}} + \mathbb{I}_{(\text{defective}_k)} \cdot V_k \cdot \rho_{\text{write-off}} \right]$$
 
 Where:
-* $M$: Total shipment count.
+* $M$: Total shipment count across selected lanes.
 * $\Delta t_k = \max(0, t_{\text{actual}, k} - t_{\text{promised}, k})$: Delay duration in days.
-* $C_{\text{delay}}$: Negotiated late penalty per day (€/day).
-* $\mathbb{I}_{(\text{defective}_k)} \in \{0, 1\}$: Indicator variable for defective delivery.
+* $C_{\text{delay}}$: Negotiated contractual penalty rate per day (€/day).
+* $\mathbb{I}_{(\text{defective}_k)} \in \{0, 1\}$: Binary indicator variable for defective delivery batches.
 * $V_k$: Gross invoice value of shipment $k$.
-* $\rho_{\text{write-off}}$: Percentage financial penalty on defective batches.
+* $\rho_{\text{write-off}}$: Percentage write-off penalty applied to non-compliant shipments.
 
 ### 2. Stochastic Safety Stock ($SS$) & Reorder Point ($ROP$) Engine
-To protect service levels against dual supply and demand stochasticity:
+Assuming demand during lead time is the convolution of two independent random variables—daily customer demand $D \sim (\overline{D}, \sigma_D^2)$ and replenishment lead time $L \sim (\overline{L}, \sigma_L^2)$—the total variance over lead time is given by:
+
+$$\sigma_{DL}^2 = \overline{L} \cdot \sigma_D^2 + \overline{D}^2 \cdot \sigma_L^2$$
+
+To achieve a targeted Cycle Service Level ($\text{CSL}$), the dynamic safety stock buffer and continuous-review reorder threshold are formulated as:
 
 $$SS = Z \cdot \sqrt{\overline{L} \cdot \sigma_D^2 + \overline{D}^2 \cdot \sigma_L^2}$$
 
 $$ROP = (\overline{D} \cdot \overline{L}) + SS$$
 
 Where:
-* $Z$: Inverse cumulative normal distribution factor for target cycle service level (e.g., $Z = 1.65$ for $95\%$, $Z = 2.33$ for $99\%$).
-* $\overline{D}$: Average daily demand volume.
-* $\sigma_D$: Standard deviation of daily demand.
-* $\overline{L}$: Empirical mean actual lead time across filtered suppliers.
-* $\sigma_L$: Standard deviation of supplier lead time (transit volatility).
+* $Z = \Phi^{-1}(\text{CSL})$: Inverse standard normal cumulative distribution factor (e.g., $Z = 1.645$ for $95\%$, $Z = 2.326$ for $99\%$).
+* $\overline{D}, \sigma_D$: Empirical mean and standard deviation of daily demand.
+* $\overline{L}, \sigma_L$: Empirical mean and standard deviation of transit lead time across selected nodes.
 
 ---
 
@@ -78,11 +82,11 @@ Where:
 
 | Module | Core Logic | Business Impact |
 | :--- | :--- | :--- |
-| **Executive KPI Strip** | OTIF % & Aggregate Disruption Loss | Delivers top-line visibility into network reliability and unrecovered SLA penalties. |
-| **Lead-Time Variance** | Histogram & Marginal Box Spread | Isolates fat-tail delays and transit outliers by shipping mode. |
-| **Supplier Risk Matrix** | Multi-Variable Scatter / Bubble | Maps OTIF fulfillment against delay days, sizing nodes by net financial disruption loss (€). |
-| **Inventory Buffer Simulator** | Non-Linear Variance Propagation | Determines exact safety stock and ROP quantities required to sustain target service levels without over-allocating working capital. |
-| **Audit Center** | Automated Exception Filtering | Surfaces defective and delayed shipments with one-click audit CSV extraction. |
+| **Executive KPI Strip** | OTIF % & Aggregate Disruption Loss | Delivers immediate visibility into service reliability and total unrecovered vendor penalties. |
+| **Lead-Time Variance** | Empirical Histograms & Box Plots | Isolates fat-tail distribution skews and multi-modal transit outliers across freight modes. |
+| **Supplier Risk Matrix** | Multi-Variable Risk Space | Maps OTIF reliability against mean delay, sizing nodes by net financial disruption exposure (€). |
+| **Inventory Buffer Simulator** | Dual-Variance Propagation | Determines minimum safety stock and ROP required to maintain service targets without inflating inventory carrying cost. |
+| **Audit Center** | Automated Exception Filtering | Surfaces non-compliant batches with instant CSV audit ledger extraction. |
 
 ---
 
@@ -91,7 +95,7 @@ Where:
 * **Language:** Python 3.10+
 * **Data Processing & Analytics:** `Pandas`, `NumPy`
 * **Visualization Suite:** `Plotly Express`, `Plotly Graph Objects`
-* **Application Framework:** `Streamlit`
+* **Application Framework & Deployment:** `Streamlit Cloud`
 
 ---
 
