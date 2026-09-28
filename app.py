@@ -7,128 +7,177 @@ import plotly.graph_objects as go
 # 1. Page Configuration
 st.set_page_config(
     page_title="Global Supply Chain Risk & Operational Optimizer",
-    page_icon="📦",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
 # 2. Bespoke Theme & Professional Typography Styling
-# Palette:
-# #04429C (Deep Midnight Blue)
-# #0BC8BD (Dark Turquoise / Vibrant Cyan)
-# #FFE66D (Warm Gold / Khaki)
-# #FEA6A2 (Light Coral / Salmon)
 st.markdown("""
 <style>
-    /* Professional Typography Ingestion */
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
-    /* Global Base */
-    .stApp {
-        background-color: #032b69;
-        color: #F8FAFC;
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* 1. Global Base Canvas */
+    :root, .stApp {
+        --primary-color: #0070AD !important;
+        background-color: #F8FAFC !important;
+        color: #0F172A !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
         -webkit-font-smoothing: antialiased;
     }
-    
-    /* Sidebar */
+
+    /* 2. Enterprise Light-Slate Sidebar */
     section[data-testid="stSidebar"] {
-        background-color: #04429C !important;
-        border-right: 1px solid rgba(11, 200, 189, 0.25) !important;
+        background-color: #F1F5F9 !important;
+        border-right: 1px solid #E2E8F0 !important;
         font-family: 'Inter', sans-serif !important;
     }
-    section[data-testid="stSidebar"] h1, 
-    section[data-testid="stSidebar"] h2, 
-    section[data-testid="stSidebar"] h3,
-    section[data-testid="stSidebar"] label,
-    section[data-testid="stSidebar"] .stMarkdown {
-        color: #FFFFFF !important;
+    
+    .sidebar-heading {
+        color: #0F172A !important;
+        font-family: 'Inter', sans-serif !important;
+        font-weight: 800 !important;
+        text-transform: uppercase;
+        font-size: 0.82rem !important;
+        letter-spacing: 0.8px !important;
+        margin-top: 10px !important;
+        margin-bottom: 12px !important;
     }
 
-    /* Executive Glass Metric Containers */
+    section[data-testid="stSidebar"] label,
+    section[data-testid="stSidebar"] label p,
+    section[data-testid="stSidebar"] label span {
+        color: #0F172A !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+    }
+
+    /* Sidebar Multiselect Chips */
+    section[data-testid="stSidebar"] span[data-baseweb="tag"] {
+        background-color: #E0F2FE !important;
+        border: 1px solid #BAE6FD !important;
+        border-radius: 4px !important;
+    }
+    section[data-testid="stSidebar"] span[data-baseweb="tag"] span {
+        color: #0369A1 !important;
+        font-weight: 600 !important;
+    }
+
+    /* Sidebar Sliders & Numeric Inputs */
+    section[data-testid="stSidebar"] div[data-baseweb="slider"] div[role="slider"] {
+        background-color: #0070AD !important;
+        border: 2px solid #FFFFFF !important;
+        box-shadow: 0 0 0 2px rgba(0, 112, 173, 0.3) !important;
+    }
+    section[data-testid="stSidebar"] div[data-baseweb="slider"] > div > div > div {
+        background: #0070AD !important;
+    }
+    section[data-testid="stSidebar"] div[data-baseweb="slider"] > div > div {
+        background: #CBD5E1 !important;
+    }
+    section[data-testid="stSidebar"] div[data-testid="stThumbValue"] {
+        background-color: #0070AD !important;
+        color: #FFFFFF !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-weight: 700 !important;
+        font-size: 0.80rem !important;
+        border-radius: 4px !important;
+        padding: 2px 6px !important;
+    }
+    section[data-testid="stSidebar"] [data-testid="stTickBarMin"],
+    section[data-testid="stSidebar"] [data-testid="stTickBarMax"] {
+        color: #64748B !important;
+        font-family: 'JetBrains Mono', monospace !important;
+        font-size: 0.74rem !important;
+        font-weight: 600 !important;
+    }
+
+    /* 3. Executive Metric Cards */
     .metric-card {
-        background: #063980;
-        border: 1px solid rgba(11, 200, 189, 0.3);
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         border-radius: 8px;
-        padding: 14px 18px;
+        padding: 16px 20px;
         margin-bottom: 12px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
     }
     .metric-sub {
         font-family: 'Inter', sans-serif;
-        font-size: 0.75rem;
-        color: #FFE66D;
-        font-weight: 600;
+        font-size: 0.74rem;
+        color: #64748B;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.8px;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
     }
     .metric-val {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 1.65rem;
+        font-size: 1.70rem;
         font-weight: 700;
-        color: #0BC8BD;
-        letter-spacing: -0.5px;
+        color: #0070AD;
+        letter-spacing: -0.6px;
         line-height: 1.2;
     }
     .metric-caption {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.74rem;
-        color: #E2E8F0;
-        margin-top: 3px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.76rem;
+        color: #475569;
+        font-weight: 500;
+        margin-top: 4px;
     }
 
-    /* Tabs Styling */
+    /* 4. Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        border-bottom: 1px solid rgba(11, 200, 189, 0.25);
+        border-bottom: 1px solid #CBD5E1;
     }
     .stTabs [data-baseweb="tab"] {
-        background-color: #04429C !important;
+        background-color: #FFFFFF !important;
         border-radius: 6px 6px 0 0 !important;
-        color: #E2E8F0 !important;
-        padding: 8px 16px !important;
-        border: 1px solid rgba(11, 200, 189, 0.2) !important;
+        color: #64748B !important;
+        padding: 10px 18px !important;
+        border: 1px solid #E2E8F0 !important;
         border-bottom: none !important;
         font-family: 'Inter', sans-serif !important;
-        font-size: 0.85rem !important;
+        font-size: 0.88rem !important;
         font-weight: 600 !important;
     }
     .stTabs [aria-selected="true"] {
-        background-color: #063980 !important;
-        color: #FFE66D !important;
-        border: 1px solid #0BC8BD !important;
-        border-bottom: 2px solid #0BC8BD !important;
+        background-color: #0070AD !important;
+        color: #FFFFFF !important;
+        border: 1px solid #0070AD !important;
         font-weight: 700 !important;
+    }
+    .stTabs [aria-selected="true"] p {
+        color: #FFFFFF !important;
     }
 
-    /* Headings & Text */
+    /* 5. Typography */
     h1, h2, h3, h4 {
-        color: #FFFFFF !important;
+        color: #0F172A !important;
         font-family: 'Inter', sans-serif !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
         letter-spacing: -0.4px;
     }
-    p, span, label {
-        color: #F1F5F9;
+    p, span {
+        color: #334155;
         font-family: 'Inter', sans-serif;
     }
 
-    /* Primary Action Buttons */
+    /* 6. Primary Action Buttons */
     .stButton>button, .stDownloadButton>button {
-        background-color: #0BC8BD !important;
-        color: #04429C !important;
+        background-color: #0070AD !important;
+        color: #FFFFFF !important;
         font-family: 'Inter', sans-serif !important;
         font-weight: 700 !important;
-        border: none !important;
+        border: 1px solid #005A8C !important;
         border-radius: 6px !important;
-        padding: 8px 18px !important;
+        padding: 10px 20px !important;
         transition: all 0.2s ease;
     }
     .stButton>button:hover, .stDownloadButton>button:hover {
-        background-color: #FFE66D !important;
-        color: #04429C !important;
-        box-shadow: 0 0 12px rgba(11, 200, 189, 0.4) !important;
+        background-color: #005A8C !important;
+        color: #FFFFFF !important;
+        box-shadow: 0 2px 8px rgba(0, 112, 173, 0.3) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -143,37 +192,37 @@ def load_data():
 df = load_data()
 
 # 4. Header & Executive Summary
-st.markdown("<h1 style='margin-bottom: 2px;'>📦 Global Supply Chain Risk & Operational Optimizer</h1>", unsafe_allow_html=True)
-st.markdown("<p style='color: #0BC8BD; font-size: 0.95rem; margin-top: 0px;'>Decision-support analytics: evaluate <b>On-Time In-Full (OTIF)</b> performance, quantify <b>financial disruption write-offs</b>, and simulate <b>buffer inventory</b> under stochastic lead-time variance.</p>", unsafe_allow_html=True)
+st.markdown("<h1 style='margin-bottom: 2px;'>Global Supply Chain Risk & Operational Optimizer</h1>", unsafe_allow_html=True)
+st.markdown("<p style='color: #475569; font-size: 0.95rem; margin-top: 0px;'>Decision-support analytics: evaluate <b>On-Time In-Full (OTIF)</b> performance, quantify <b>financial disruption write-offs</b>, and simulate <b>buffer inventory</b> under stochastic lead-time variance.</p>", unsafe_allow_html=True)
 
 # 5. Sidebar Controls & Parameters
-st.sidebar.markdown("<h3 style='color: #FFE66D;'>🕹️ Operational Filters</h3>", unsafe_allow_html=True)
-selected_suppliers = st.sidebar.multiselect(
-    "Select Suppliers", 
-    options=df['supplier'].unique(), 
-    default=df['supplier'].unique()
-)
-selected_modes = st.sidebar.multiselect(
-    "Shipping Modes", 
-    options=df['shipping_mode'].unique(), 
-    default=df['shipping_mode'].unique()
-)
-selected_categories = st.sidebar.multiselect(
-    "Product Categories", 
-    options=df['product_category'].unique(), 
-    default=df['product_category'].unique()
-)
+with st.sidebar:
+    st.markdown("<div class='sidebar-heading'>Operational Filters</div>", unsafe_allow_html=True)
+    selected_suppliers = st.multiselect(
+        "Select Suppliers", 
+        options=df['supplier'].unique(), 
+        default=df['supplier'].unique()
+    )
+    selected_modes = st.multiselect(
+        "Shipping Modes", 
+        options=df['shipping_mode'].unique(), 
+        default=df['shipping_mode'].unique()
+    )
+    selected_categories = st.multiselect(
+        "Product Categories", 
+        options=df['product_category'].unique(), 
+        default=df['product_category'].unique()
+    )
 
-# Sidebar Financial Parameter
-st.sidebar.markdown("---")
-st.sidebar.markdown("<h3 style='color: #FFE66D;'>💶 Disruption Cost Parameters</h3>", unsafe_allow_html=True)
-delay_cost_per_day = st.sidebar.number_input("Late Delivery Penalty (€/Day)", min_value=50, max_value=5000, value=250, step=50)
-defect_penalty_pct = st.sidebar.slider("Defect Financial Write-off (%)", min_value=10, max_value=100, value=50, step=5)
+    st.markdown("<hr style='border: none; border-top: 1px solid #CBD5E1; margin: 20px 0;'>", unsafe_allow_html=True)
+    st.markdown("<div class='sidebar-heading'>Disruption Cost Parameters</div>", unsafe_allow_html=True)
+    delay_cost_per_day = st.number_input("Late Delivery Penalty (€/Day)", min_value=50, max_value=5000, value=250, step=50)
+    defect_penalty_pct = st.slider("Defect Financial Write-off (%)", min_value=10, max_value=100, value=50, step=5)
 
 # Filter Dataset
 filtered_df = df[
     (df['supplier'].isin(selected_suppliers)) & 
-    (df['shipping_mode'].isin(selected_modes)) &
+    (df['shipping_mode'].isin(selected_modes)) & 
     (df['product_category'].isin(selected_categories))
 ].copy()
 
@@ -189,37 +238,37 @@ otif_rate = (filtered_df['is_otif'].mean()) * 100 if total_orders > 0 else 0
 total_disruption_loss = filtered_df['total_disruption_cost_eur'].sum()
 avg_lead_time = filtered_df['actual_lead_time_days'].mean() if total_orders > 0 else 0
 
-st.markdown("<div style='margin-top: 14px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 kpi1, kpi2, kpi3, kpi4, kpi5 = st.columns(5)
 
 with kpi1:
-    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Total Shipments</div><div class='metric-val'>{total_orders:,}</div><div class='metric-caption'>Tracked Batches</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Total Shipments</div><div class='metric-val' style='color: #0F172A;'>{total_orders:,}</div><div class='metric-caption'>Tracked Batches</div></div>""", unsafe_allow_html=True)
 with kpi2:
     st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Total Sourcing Spend</div><div class='metric-val'>€{total_spend:,.0f}</div><div class='metric-caption'>Gross Invoiced</div></div>""", unsafe_allow_html=True)
 with kpi3:
-    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>OTIF Success Rate</div><div class='metric-val' style='color: #FFE66D;'>{otif_rate:.1f}%</div><div class='metric-caption'>Service Fulfillment</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>OTIF Success Rate</div><div class='metric-val' style='color: #059669;'>{otif_rate:.1f}%</div><div class='metric-caption'>Service Fulfillment</div></div>""", unsafe_allow_html=True)
 with kpi4:
-    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Disruption Loss</div><div class='metric-val' style='color: #FEA6A2;'>€{total_disruption_loss:,.0f}</div><div class='metric-caption'>Delays + Write-offs</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Disruption Loss</div><div class='metric-val' style='color: #0F172A;'>€{total_disruption_loss:,.0f}</div><div class='metric-caption'>Delays + Write-offs</div></div>""", unsafe_allow_html=True)
 with kpi5:
-    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Avg Actual Lead Time</div><div class='metric-val'>{avg_lead_time:.1f}d</div><div class='metric-caption'>Transit Duration</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Avg Actual Lead Time</div><div class='metric-val' style='color: #0070AD;'>{avg_lead_time:.1f}d</div><div class='metric-caption'>Transit Duration</div></div>""", unsafe_allow_html=True)
 
-st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+st.markdown("<div style='margin-top: 6px;'></div>", unsafe_allow_html=True)
 
 # Plotly Palette Theme Template
 PLOTLY_THEME = {
     "layout": {
-        "paper_bgcolor": "#063980",
-        "plot_bgcolor": "#042c67",
-        "font": {"color": "#FFFFFF", "family": "Inter, sans-serif"},
+        "paper_bgcolor": "#FFFFFF",
+        "plot_bgcolor": "#FFFFFF",
+        "font": {"color": "#0F172A", "family": "Inter, sans-serif"},
         "xaxis": {
-            "gridcolor": "rgba(11, 200, 189, 0.15)",
-            "zerolinecolor": "rgba(11, 200, 189, 0.2)",
-            "tickfont": {"family": "JetBrains Mono, monospace", "size": 11}
+            "gridcolor": "#F1F5F9",
+            "zerolinecolor": "#E2E8F0",
+            "tickfont": {"family": "JetBrains Mono, monospace", "size": 11, "color": "#475569"}
         },
         "yaxis": {
-            "gridcolor": "rgba(11, 200, 189, 0.15)",
-            "zerolinecolor": "rgba(11, 200, 189, 0.2)",
-            "tickfont": {"family": "JetBrains Mono, monospace", "size": 11}
+            "gridcolor": "#F1F5F9",
+            "zerolinecolor": "#E2E8F0",
+            "tickfont": {"family": "JetBrains Mono, monospace", "size": 11, "color": "#475569"}
         }
     }
 }
@@ -228,14 +277,14 @@ PLOTLY_THEME = {
 col_left, col_right = st.columns(2)
 
 with col_left:
-    st.markdown("### 📊 Lead-Time Variance by Freight Mode")
+    st.markdown("<h4 style='color: #0F172A;'>Lead-Time Variance by Freight Mode</h4>", unsafe_allow_html=True)
     fig_hist = px.histogram(
         filtered_df, 
         x="actual_lead_time_days", 
         color="shipping_mode", 
         marginal="box",
         labels={'actual_lead_time_days': 'Actual Lead Time (Days)', 'shipping_mode': 'Freight Mode'},
-        color_discrete_sequence=["#0BC8BD", "#FFE66D", "#FEA6A2", "#60A5FA"]
+        color_discrete_sequence=["#0070AD", "#0284C7", "#38BDF8", "#64748B"]
     )
     fig_hist.update_layout(
         template=PLOTLY_THEME,
@@ -246,7 +295,7 @@ with col_left:
     st.plotly_chart(fig_hist, use_container_width=True)
 
 with col_right:
-    st.markdown("### 🎯 Supplier Reliability & Financial Risk Matrix")
+    st.markdown("<h4 style='color: #0F172A;'>Supplier Reliability & Financial Risk Matrix</h4>", unsafe_allow_html=True)
     supplier_agg = filtered_df.groupby('supplier').agg(
         total_orders=('order_id', 'count'),
         otif_pct=('is_otif', lambda x: x.mean() * 100),
@@ -255,14 +304,14 @@ with col_right:
     ).reset_index()
 
     fig_bubble = px.scatter(
-        supplier_agg,
-        x="otif_pct",
-        y="avg_delay",
-        size="disruption_loss",
-        color="supplier",
+        supplier_agg, 
+        x="otif_pct", 
+        y="avg_delay", 
+        size="disruption_loss", 
+        color="supplier", 
         hover_data=['total_orders', 'disruption_loss'],
         labels={'otif_pct': 'OTIF Rate (%)', 'avg_delay': 'Avg Delay (Days)'},
-        color_discrete_sequence=["#0BC8BD", "#FFE66D", "#FEA6A2", "#93C5FD", "#34D399"]
+        color_discrete_sequence=["#0070AD", "#0284C7", "#38BDF8", "#475569", "#0F172A"]
     )
     fig_bubble.update_layout(
         template=PLOTLY_THEME,
@@ -273,9 +322,9 @@ with col_right:
     st.plotly_chart(fig_bubble, use_container_width=True)
 
 # 8. Safety Stock & Reorder Point Simulation Engine
-st.markdown("---")
-st.markdown("### ⚙️ Stochastic Safety Stock & Service Level Buffer Engine")
-st.markdown("<p style='color: #0BC8BD; font-size: 0.88rem;'>Calculate mathematically rigorous inventory buffers to protect against stockout risk under supplier lead-time volatility ($\\sigma_L$) and demand variance ($\\sigma_D$).</p>", unsafe_allow_html=True)
+st.markdown("<hr style='border: none; border-top: 1px solid #E2E8F0; margin: 28px 0;'>", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #0F172A;'>Stochastic Safety Stock & Service Level Buffer Engine</h3>", unsafe_allow_html=True)
+st.markdown("<p style='color: #64748B; font-size: 0.88rem;'>Calculate mathematically rigorous inventory buffers to protect against stockout risk under supplier lead-time volatility ($\\sigma_L$) and demand variance ($\\sigma_D$).</p>", unsafe_allow_html=True)
 
 sim_col1, sim_col2 = st.columns(2)
 with sim_col1:
@@ -297,13 +346,13 @@ r1, r2, r3 = st.columns(3)
 with r1:
     st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Recommended Safety Buffer</div><div class='metric-val'>{int(ss_units):,} Units</div><div class='metric-caption'>Mitigates dual variability</div></div>""", unsafe_allow_html=True)
 with r2:
-    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Reorder Point (ROP)</div><div class='metric-val' style='color: #FFE66D;'>{int(reorder_point):,} Units</div><div class='metric-caption'>Trigger purchase order threshold</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Reorder Point (ROP)</div><div class='metric-val' style='color: #0F172A;'>{int(reorder_point):,} Units</div><div class='metric-caption'>Trigger purchase order threshold</div></div>""", unsafe_allow_html=True)
 with r3:
-    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Lead-Time Volatility (σ_L)</div><div class='metric-val' style='color: #FEA6A2;'>{std_L:.2f} Days</div><div class='metric-caption'>Empirical node standard deviation</div></div>""", unsafe_allow_html=True)
+    st.markdown(f"""<div class='metric-card'><div class='metric-sub'>Lead-Time Volatility (σ_L)</div><div class='metric-val' style='color: #64748B;'>{std_L:.2f} Days</div><div class='metric-caption'>Empirical node standard deviation</div></div>""", unsafe_allow_html=True)
 
 # 9. Data Audit & Export Center
-st.markdown("---")
-st.markdown("### 📋 Order Audit & Anomaly Export Center")
+st.markdown("<hr style='border: none; border-top: 1px solid #E2E8F0; margin: 28px 0;'>", unsafe_allow_html=True)
+st.markdown("<h3 style='color: #0F172A;'>Order Audit & Anomaly Export Center</h3>", unsafe_allow_html=True)
 
 tab1, tab2 = st.tabs(["Delayed Shipments Log", "Defective Orders Log"])
 
@@ -318,7 +367,7 @@ with tab2:
 # CSV Download Action
 csv_export = filtered_df.to_csv(index=False).encode('utf-8')
 st.download_button(
-    label="📥 Download Filtered Operational Dataset (CSV)",
+    label="Download Filtered Operational Dataset (CSV)",
     data=csv_export,
     file_name="filtered_supply_chain_audit.csv",
     mime="text/csv"
