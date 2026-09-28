@@ -1,39 +1,39 @@
-# 📦 Global Supply Chain Risk & Operational Optimizer
+# Global Supply Chain Risk & Operational Optimizer
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://supply-chain-optimizer-nd2hjpl7rhhkhe7p9nfzme.streamlit.app/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 
-An enterprise-grade operational risk analytics suite that evaluates **On-Time In-Full (OTIF)** fulfillment, quantifies **empirical financial disruption losses**, and simulates **stochastic buffer inventory** (Safety Stock & Reorder Points) under compound lead-time ($\sigma_L$) and demand ($\sigma_D$) volatility.
+An enterprise-grade operational risk analytics engine that evaluates **On-Time In-Full (OTIF)** fulfillment, quantifies **empirical financial disruption losses**, and simulates **stochastic buffer inventory** (Safety Stock & Reorder Points) under compound lead-time ($\sigma_L$) and demand ($\sigma_D$) volatility.
 
 ---
 
-## 🎬 Live Platform Walkthrough
+## Platform Walkthrough
 
 ### Executive Terminal & Risk Engine Demo
 https://github.com/user-attachments/assets/Dashboard_Preview.mp4
 
-> **Interactive Cockpit:** Real-time multi-echelon filtering across suppliers, freight modes, and SKUs to quantify financial delay write-offs and optimize working capital allocation.
+> **Interactive Cockpit:** Multi-echelon parameter filtering across suppliers, freight modes, and SKUs to quantify financial delay write-offs and optimize working capital allocation.
 
 ---
 
-## 📸 Platform Previews
+## Platform Previews
 
-### 1. Executive Cockpit & KPI Strip
-![Main Cockpit](Main_Page.png)
+### 1. Executive Cockpit & KPI Control Strip
+![Executive Cockpit](Main.png)
 
-### 2. Lead-Time Variance & Multi-Modal Spread
-![Lead Time Spread](Preview1.png)
+### 2. Multi-Modal Variance & Stochastic Buffer Workbench
+![Platform Overview](Page.png)
 
-### 3. Supplier OTIF vs. Disruption Loss Matrix
-![Supplier Risk Matrix](Preview2.png)
+### 3. Operational Audit & Delayed Shipments Ledger
+![Delayed Shipments Audit](Audit.png)
 
-### 4. Stochastic Safety Stock & Service Level Buffer Engine
-![Inventory Simulation](Preview3.png)
+### 4. Defective Batch Extraction & Disruption Audit
+![Defective Orders Audit](Defective_Log.png)
 
 ---
 
-## 📌 Executive Architecture & Problem Framing
+## Executive Architecture & Problem Framing
 
 Global procurement networks frequently suffer margin leakage caused by unmonitored supplier delay variance, defect write-offs, and stockouts. Traditional ERP dashboards report static historical averages without linking delivery variance to working capital risk.
 
@@ -45,7 +45,7 @@ This engine bridges descriptive logistics metrics with prescriptive financial co
 
 ---
 
-## 🧮 Mathematical & Econometric Formulations
+## Mathematical & Econometric Formulations
 
 ### 1. Dynamic Financial Disruption Loss Function
 Disruption impact is computed across historical shipments without imposing restrictive distribution assumptions:
@@ -78,7 +78,7 @@ Where:
 
 ---
 
-## 🚀 Key Modules
+## Key Modules
 
 | Module | Core Logic | Business Impact |
 | :--- | :--- | :--- |
@@ -90,7 +90,7 @@ Where:
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 * **Language:** Python 3.10+
 * **Data Processing & Analytics:** `Pandas`, `NumPy`
@@ -99,7 +99,7 @@ Where:
 
 ---
 
-## 📦 Local Installation & Setup
+## Local Installation & Setup
 
 1. **Clone the repository:**
    ```bash
