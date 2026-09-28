@@ -3,6 +3,10 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import plotly.io as pio
+
+# Set Plotly Default Template to Clean White
+pio.templates.default = "plotly_white"
 
 # 1. Page Configuration
 st.set_page_config(
@@ -16,7 +20,7 @@ st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap');
 
-    /* 1. Global Base Canvas */
+    /* Global Base Canvas */
     :root, .stApp {
         --primary-color: #0070AD !important;
         background-color: #F8FAFC !important;
@@ -25,7 +29,7 @@ st.markdown("""
         -webkit-font-smoothing: antialiased;
     }
 
-    /* 2. Enterprise Light-Slate Sidebar */
+    /* Enterprise Light-Slate Sidebar */
     section[data-testid="stSidebar"] {
         background-color: #F1F5F9 !important;
         border-right: 1px solid #E2E8F0 !important;
@@ -51,18 +55,44 @@ st.markdown("""
         font-weight: 600 !important;
     }
 
-    /* Sidebar Multiselect Chips */
-    section[data-testid="stSidebar"] span[data-baseweb="tag"] {
+    /* KILL BLACK MULTISELECT BOXES -> MAKE THEM CLEAN WHITE */
+    div[data-baseweb="select"] > div {
+        background-color: #FFFFFF !important;
+        border: 1px solid #CBD5E1 !important;
+        border-radius: 6px !important;
+    }
+    div[data-baseweb="select"] > div:hover {
+        border-color: #0070AD !important;
+    }
+
+    /* KILL RED BADGES -> CONVERT TO INSTITUTIONAL BLUE TAGS */
+    [data-baseweb="tag"],
+    span[data-baseweb="tag"],
+    div[data-baseweb="tag"] {
         background-color: #E0F2FE !important;
         border: 1px solid #BAE6FD !important;
         border-radius: 4px !important;
     }
-    section[data-testid="stSidebar"] span[data-baseweb="tag"] span {
+    [data-baseweb="tag"] span,
+    span[data-baseweb="tag"] span,
+    div[data-baseweb="tag"] span {
         color: #0369A1 !important;
+        font-family: 'Inter', sans-serif !important;
         font-weight: 600 !important;
+        font-size: 0.78rem !important;
+    }
+    /* Tag Delete Icon (X) */
+    [data-baseweb="tag"] svg,
+    span[data-baseweb="tag"] svg,
+    div[data-baseweb="tag"] svg {
+        fill: #0369A1 !important;
+    }
+    /* MultiSelect Clear All (X) & Caret Arrow */
+    div[data-baseweb="select"] svg {
+        fill: #64748B !important;
     }
 
-    /* Sidebar Sliders & Numeric Inputs */
+    /* Sliders & Numeric Inputs */
     section[data-testid="stSidebar"] div[data-baseweb="slider"] div[role="slider"] {
         background-color: #0070AD !important;
         border: 2px solid #FFFFFF !important;
@@ -91,7 +121,7 @@ st.markdown("""
         font-weight: 600 !important;
     }
 
-    /* 3. Executive Metric Cards */
+    /* Executive Metric Cards */
     .metric-card {
         background: #FFFFFF;
         border: 1px solid #E2E8F0;
@@ -125,7 +155,7 @@ st.markdown("""
         margin-top: 4px;
     }
 
-    /* 4. Tabs Styling */
+    /* Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
         border-bottom: 1px solid #CBD5E1;
@@ -151,7 +181,7 @@ st.markdown("""
         color: #FFFFFF !important;
     }
 
-    /* 5. Typography */
+    /* Typography */
     h1, h2, h3, h4 {
         color: #0F172A !important;
         font-family: 'Inter', sans-serif !important;
@@ -163,7 +193,7 @@ st.markdown("""
         font-family: 'Inter', sans-serif;
     }
 
-    /* 6. Primary Action Buttons */
+    /* Primary Action Buttons */
     .stButton>button, .stDownloadButton>button {
         background-color: #0070AD !important;
         color: #FFFFFF !important;
@@ -254,26 +284,7 @@ with kpi5:
 
 st.markdown("<div style='margin-top: 6px;'></div>", unsafe_allow_html=True)
 
-# Plotly Palette Theme Template
-PLOTLY_THEME = {
-    "layout": {
-        "paper_bgcolor": "#FFFFFF",
-        "plot_bgcolor": "#FFFFFF",
-        "font": {"color": "#0F172A", "family": "Inter, sans-serif"},
-        "xaxis": {
-            "gridcolor": "#F1F5F9",
-            "zerolinecolor": "#E2E8F0",
-            "tickfont": {"family": "JetBrains Mono, monospace", "size": 11, "color": "#475569"}
-        },
-        "yaxis": {
-            "gridcolor": "#F1F5F9",
-            "zerolinecolor": "#E2E8F0",
-            "tickfont": {"family": "JetBrains Mono, monospace", "size": 11, "color": "#475569"}
-        }
-    }
-}
-
-# 7. Core Visual Analytics (Charts)
+# 7. Core Visual Analytics (Clean Light Enterprise Charts)
 col_left, col_right = st.columns(2)
 
 with col_left:
@@ -287,7 +298,11 @@ with col_left:
         color_discrete_sequence=["#0070AD", "#0284C7", "#38BDF8", "#64748B"]
     )
     fig_hist.update_layout(
-        template=PLOTLY_THEME,
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF",
+        font=dict(color="#0F172A", family="Inter, sans-serif"),
+        xaxis=dict(gridcolor="#F1F5F9", zerolinecolor="#E2E8F0", tickfont=dict(color="#475569")),
+        yaxis=dict(gridcolor="#F1F5F9", zerolinecolor="#E2E8F0", tickfont=dict(color="#475569")),
         margin=dict(l=20, r=20, t=30, b=20),
         height=350,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
@@ -314,7 +329,11 @@ with col_right:
         color_discrete_sequence=["#0070AD", "#0284C7", "#38BDF8", "#475569", "#0F172A"]
     )
     fig_bubble.update_layout(
-        template=PLOTLY_THEME,
+        paper_bgcolor="#FFFFFF",
+        plot_bgcolor="#FFFFFF",
+        font=dict(color="#0F172A", family="Inter, sans-serif"),
+        xaxis=dict(gridcolor="#F1F5F9", zerolinecolor="#E2E8F0", tickfont=dict(color="#475569")),
+        yaxis=dict(gridcolor="#F1F5F9", zerolinecolor="#E2E8F0", tickfont=dict(color="#475569")),
         margin=dict(l=20, r=20, t=30, b=20),
         height=350,
         legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
